@@ -116,7 +116,8 @@ http.createServer((req, res) => {
   if (!file.startsWith(DIRS.pub + path.sep)) { res.writeHead(403); return res.end(); }
   serveFile(req, res, file);
 }).listen(PORT, () => {
-  console.log(`Site chal rahi hai: http://localhost:${PORT}   Admin: http://localhost:${PORT}/admin`);
+  const base = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;   // Render par asli https link aata hai
+  console.log(`Site chal rahi hai: ${base}   Admin panel: ${base}/admin`);
   // Files sahi jagah hain ya nahi - Render ke Logs me dikhega
   const chk = f => console.log((fs.existsSync(f) ? 'OK      ' : 'MISSING ') + path.relative(__dirname, f));
   chk(path.join(DIRS.pub, 'index.html')); chk(path.join(DIRS.priv, 'admin.html'));
