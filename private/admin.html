@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Apna Ride – Admin</title>
+<style>
+:root{--indigo:#2B2670;--night:#15123F;--gold:#FFB62E;--mist:#F4F4FB;--mute:#5E5C7A}
+*{box-sizing:border-box;margin:0}body{font-family:system-ui,sans-serif;background:var(--mist);color:#1B1A33;min-height:100vh}
+header{background:var(--night);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+header b{font-size:20px}header b i{color:var(--gold);font-style:normal}
+main{max-width:980px;margin:30px auto;padding:0 18px;display:grid;gap:22px}
+.card{background:#fff;border-radius:20px;padding:26px;box-shadow:0 10px 30px #2b267018}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+h2{font-size:22px;margin-bottom:4px}.st{color:var(--mute);font-size:14px;margin-bottom:16px;word-break:break-all}.st.on{color:#1a7f4b}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 5px}
+input[type=text],input[type=password]{width:100%;padding:12px 14px;border:2px solid #dcdaf0;border-radius:12px;font:inherit}
+input:focus{outline:none;border-color:var(--indigo)}
+.drop{border:2px dashed #b9b6e0;border-radius:14px;padding:22px;text-align:center;color:var(--mute);cursor:pointer;transition:.2s}
+.drop.over{background:#efeeff;border-color:var(--indigo)}.drop b{color:var(--indigo)}
+button{border:0;border-radius:999px;padding:13px 24px;font:700 15px system-ui;cursor:pointer;background:var(--indigo);color:#fff;margin-top:16px}
+button.ghost{background:transparent;color:#ff9a9a;border:1px solid #ffffff44;margin:0;padding:8px 16px}
+button.del{background:#fff0f0;color:#b3261e;margin-left:8px}button:disabled{opacity:.5;cursor:wait}
+.bar{height:10px;background:#e6e5f5;border-radius:9px;margin-top:14px;overflow:hidden;display:none}.bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+.msg{margin-top:10px;font-size:14px;min-height:20px}.err{color:#b3261e}.ok{color:#1a7f4b}
+#login{max-width:380px;margin:12vh auto}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<div id="login" class="card" hidden><h2>Admin login</h2><p class="st">Sirf website ke malik ke liye.</p>
+ <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password">
+ <button id="go">Login</button><div class="msg err" id="lm"></div></div>
+<div id="panel" hidden>
+ <header><b>Apna<i>Ride</i> Admin</b><div><a href="/" style="color:#cfcdf5;margin-right:16px" target="_blank">Website dekho</a><button class="ghost" id="out">Logout</button></div></header>
+ <main><div class="grid" id="apps"></div>
+ <p class="st">APK ko Android Studio me <b>Signed APK</b> bana ke hi upload karo. Upload karte hi website par naya version dikhne lagta hai.</p></main>
+</div>
+<script>
+const H={'X-Requested-With':'apnaride'},$=s=>document.querySelector(s);
+const APPS=[['customer','Apna Ride (passenger app)'],['partner','Apna Ride Partner (driver app)']];
+const mb=b=>(b/1048576).toFixed(1)+' MB';
+async function me(){const r=await fetch('/api/me');return r.ok}
+async function show(){
+ if(!await me()){$('#login').hidden=false;$('#panel').hidden=true;return}
+ $('#login').hidden=true;$('#panel').hidden=false;
+ const d=await (await fetch('/api/apps')).json();const box=$('#apps');box.innerHTML='';
+ APPS.forEach(([k,name])=>{const a=d[k],c=document.createElement('section');c.className='card';
+  const h=document.createElement('h2');h.textContent=name;
+  const s=document.createElement('p');s.className='st'+(a?' on':'');
+  s.textContent=a?`Live: v${a.version} · ${mb(a.size)} · ${a.date}`:'Abhi koi APK upload nahi hui.';
+  const L=(t,id,ph)=>{const l=document.createElement('label');l.textContent=t;l.htmlFor=id+k;const i=document.createElement('input');i.type='text';i.id=id+k;i.placeholder=ph;return[l,i]};
+  const [lv,iv]=L('Version','v','jaise 1.0.3'),[ln,inn]=L("What's new (optional)",'n','jaise Ride tracking behtar kiya');
+  const f=document.createElement('input');f.type='file';f.accept='.apk';f.hidden=true;
+  const dz=document.createElement('div');dz.className='drop';dz.innerHTML='<b>APK yahan chhodo</b> ya click karke chuno';
+  const bar=document.createElement('div');bar.className='bar';bar.innerHTML='<i></i>';
+  const m=document.createElement('div');m.className='msg';
+  const up=document.createElement('button');up.textContent='Upload karo';
+  const pick=x=>{if(x)dz.textContent=x.name+' ('+mb(x.size)+')'};
+  dz.onclick=()=>f.click();f.onchange=()=>pick(f.files[0]);
+  dz.ondragover=e=>{e.preventDefault();dz.classList.add('over')};dz.ondragleave=()=>dz.classList.remove('over');
+  dz.ondrop=e=>{e.preventDefault();dz.classList.remove('over');f.files=e.dataTransfer.files;pick(f.files[0])};
+  up.onclick=()=>{const file=f.files[0];m.className='msg';
+   if(!file||!/\.apk$/i.test(file.name)){m.className='msg err';m.textContent='Pehle .apk file chuno.';return}
+   if(!iv.value.trim()){m.className='msg err';m.textContent='Version likho.';return}
+   const q=`/api/upload?app=${k}&version=${encodeURIComponent(iv.value.trim())}&notes=${encodeURIComponent(inn.value.trim())}`;
+   const x=new XMLHttpRequest();x.open('POST',q);x.setRequestHeader('X-Requested-With','apnaride');
+   bar.style.display='block';up.disabled=true;m.textContent='Upload ho raha hai...';
+   x.upload.onprogress=e=>{if(e.lengthComputable){bar.firstChild.style.width=(e.loaded/e.total*100)+'%';m.textContent='Upload ho raha hai... '+Math.round(e.loaded/e.total*100)+'%'}};
+   x.onload=()=>{up.disabled=false;let r={};try{r=JSON.parse(x.responseText)}catch{}
+    if(x.status===200){m.className='msg ok';m.textContent='Ho gaya! Website par live hai.';setTimeout(show,900)}
+    else{m.className='msg err';m.textContent=r.error||'Upload fail hua.';bar.style.display='none'}};
+   x.onerror=()=>{up.disabled=false;m.className='msg err';m.textContent='Network error. Dobara try karo.';bar.style.display='none'};
+   x.send(file);
+  };
+  box.append(c);c.append(h,s,dz,f,lv,iv,ln,inn,bar,m,up);
+  if(a){const dl=document.createElement('button');dl.className='del';dl.textContent='Hata do';
+   dl.onclick=async()=>{if(confirm('Ye APK website se hata dein?')){await fetch('/api/delete?app='+k,{method:'POST',headers:H});show()}};c.append(dl)}
+ });
+}
+$('#go').onclick=async()=>{const r=await fetch('/api/login',{method:'POST',body:JSON.stringify({password:$('#pw').value})});
+ if(r.ok)show();else $('#lm').textContent=(await r.json()).error};
+$('#pw').onkeydown=e=>{if(e.key==='Enter')$('#go').click()};
+$('#out').onclick=async()=>{await fetch('/api/logout',{method:'POST',headers:H});location.reload()};
+show();
+</script></body></html>
