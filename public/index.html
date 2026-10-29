@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apna Ride – Jaipur's own ride app</title>
+<meta name="description" content="Download Apna Ride for passengers and Apna Ride Partner for drivers.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--indigo:#2B2670;--night:#15123F;--gold:#FFB62E;--mist:#F4F4FB;--ink:#1B1A33;--mute:#5E5C7A;--green:#1FA463;--r:22px}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{font-family:Hind,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;line-height:1.08;letter-spacing:-.02em}
+a{color:inherit}.wrap{max-width:1120px;margin:auto;padding:0 22px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+nav{position:absolute;inset:0 0 auto;z-index:5;padding:18px 0}
+nav .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font:800 22px 'Bricolage Grotesque';color:#fff;text-decoration:none}.logo i{color:var(--gold);font-style:normal}
+nav a.l{color:#dcdaff;text-decoration:none;margin-left:22px;font-weight:500}nav a.l:hover{color:#fff}
+.hero{background:radial-gradient(900px 500px at 85% 10%,#443cae 0,transparent 60%),var(--night);color:#fff;padding:130px 0 90px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(40px,6vw,70px);font-weight:800}
+.hero p{font-size:19px;color:#cfcdf5;max-width:30em;margin:22px 0 32px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font:700 16px 'Bricolage Grotesque';text-decoration:none;border:0;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px)}.btn.gold{background:var(--gold);color:#241a00;box-shadow:0 10px 30px #ffb62e55}
+.btn.ghost{border:2px solid #ffffff44;color:#fff;margin-left:10px}
+.stage{position:relative}.stage svg{width:100%;height:auto;display:block}
+.route{stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 2.6s .3s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pulse{transform-origin:center;transform-box:fill-box;animation:pulse 2s infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.chip{position:absolute;background:#fff;color:var(--ink);padding:10px 16px;border-radius:14px;font-weight:600;font-size:14px;box-shadow:0 14px 34px #0006;opacity:0;animation:pop .6s forwards}
+.chip b{color:var(--green)}.c1{left:2%;top:14%;animation-delay:2.4s}.c2{right:0;bottom:12%;animation-delay:3s}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.9)}to{opacity:1;transform:none}}
+section{padding:90px 0}h2{font-size:clamp(30px,4vw,46px);margin-bottom:14px}.sub{color:var(--mute);max-width:36em;margin-bottom:44px;font-size:18px}
+.apps{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:-60px;position:relative;z-index:2;padding:0}
+.card{border-radius:28px;padding:36px;position:relative;overflow:hidden;box-shadow:0 30px 70px #15123f33}
+.card.cu{background:var(--indigo);color:#fff}.card.pa{background:var(--gold);color:#241a00}
+.card h3{font-size:32px;margin:14px 0 8px}.card p{opacity:.88;margin-bottom:22px}
+.tag{display:inline-block;padding:5px 14px;border-radius:99px;font-weight:600;font-size:14px;background:#ffffff26}.pa .tag{background:#00000014}
+.card::after{content:"";position:absolute;right:-70px;top:-70px;width:220px;height:220px;border-radius:50%;background:#ffffff14}
+.card .btn{background:#fff;color:var(--indigo)}.pa .btn{background:var(--night);color:#fff}
+.btn[aria-disabled=true]{opacity:.55;pointer-events:none}
+.meta{margin-top:18px;font-size:14px;opacity:.85;display:grid;gap:4px}.meta code{word-break:break-all;font-size:12px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;counter-reset:s}
+.step{background:var(--mist);border-radius:var(--r);padding:30px}.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--indigo);color:#fff;font:800 20px 'Bricolage Grotesque';margin-bottom:16px}
+.step h3{font-size:22px;margin-bottom:6px}.step p{color:var(--mute)}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.feat div{border-top:3px solid var(--gold);padding-top:14px}.feat h3{font-size:19px;margin-bottom:4px}.feat p{color:var(--mute);font-size:15px}
+.install{background:var(--mist)}.ol{display:grid;gap:14px;counter-reset:i;max-width:720px}
+.ol li{list-style:none;background:#fff;border-radius:16px;padding:16px 20px 16px 62px;position:relative;box-shadow:0 6px 18px #2b267014}
+.ol li::before{counter-increment:i;content:counter(i);position:absolute;left:18px;top:14px;width:30px;height:30px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-weight:700}
+details{border-bottom:1px solid #e3e2f1;padding:18px 0;max-width:760px}summary{font:700 19px 'Bricolage Grotesque';cursor:pointer}details p{color:var(--mute);margin-top:8px}
+footer{background:var(--night);color:#bdbbe6;padding:38px 0;font-size:15px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:860px){.hero .wrap,.apps,.steps,.feat{grid-template-columns:1fr}.hero{padding-top:110px}nav a.l{display:none}.btn.ghost{margin:10px 0 0}}
+
+/* ===== extra motion ===== */
+.hero{position:relative}.hero .wrap{position:relative;z-index:1}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:drift 14s ease-in-out infinite alternate}
+.b1{width:340px;height:340px;background:#5a4fe0;left:-80px;top:40px}.b2{width:300px;height:300px;background:#ff9a3d;right:5%;bottom:-120px;opacity:.28;animation-delay:-6s}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.2)}}
+.in{opacity:0;animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes cardin{from{opacity:0;transform:translateY(40px)}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(26px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.hero h1.in{animation-delay:.1s}.hero p.in{animation-delay:.3s}.hero .cta.in{animation-delay:.5s}
+.apps .card{opacity:0;animation:cardin .9s cubic-bezier(.2,.7,.2,1) forwards;transition:transform .25s ease,box-shadow .25s}
+.apps .cu{animation-delay:.9s}.apps .pa{animation-delay:1.1s}
+.card:hover{box-shadow:0 40px 90px #15123f55}
+.ico{position:absolute;right:30px;top:30px;width:70px;height:70px;border-radius:20px;display:grid;place-items:center;z-index:1;animation:bob 3.4s ease-in-out infinite;box-shadow:0 14px 30px #0004}
+.cu .ico{background:linear-gradient(135deg,#FFB62E,#ff7a59)}.pa .ico{background:linear-gradient(135deg,#2B2670,#15123F)}.pa .ico{animation-delay:-1.7s}
+@keyframes bob{50%{transform:translateY(-12px) rotate(4deg)}}
+.card .btn{position:relative;overflow:hidden;min-width:210px;justify-content:center}
+.card .btn:not([aria-disabled=true])::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,#ffffff99,transparent);transform:skewX(-20deg);animation:shine 3s 1.8s infinite}
+@keyframes shine{0%{left:-60%}35%,100%{left:130%}}
+.card .btn:not([aria-disabled=true]){animation:ring 2.4s 2s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 #ffffff88}70%,100%{box-shadow:0 0 0 16px #ffffff00}}
+.btn.busy{pointer-events:none}.btn.busy::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:100%;background:var(--gold);transform-origin:left;animation:fill 1.4s linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.btn.done{background:var(--green)!important;color:#fff!important}
+.tick{display:inline-block;animation:tick .5s cubic-bezier(.3,1.6,.5,1)}@keyframes tick{from{transform:scale(0) rotate(-90deg)}}
+.conf{position:fixed;width:9px;height:14px;border-radius:2px;pointer-events:none;z-index:50;animation:conf 1.1s ease-out forwards}
+@keyframes conf{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+.js .rv{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .rv.show{opacity:1;transform:none}
+.step:hover{background:#ebeaff}.step{transition:background .25s,transform .25s}.step:hover{transform:translateY(-6px)}
+.feat div{transition:border-color .3s,transform .3s}.feat div:hover{border-color:var(--indigo);transform:translateY(-4px)}
+@media(max-width:860px){.ico{width:56px;height:56px;right:22px;top:22px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.route{stroke-dashoffset:0}.chip,.in,.apps .card{opacity:1!important}.js .rv{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body><script>document.documentElement.classList.add("js")</script>
+<header class="hero"><div class="blob b1"></div><div class="blob b2"></div>
+<nav><div class="wrap"><a class="logo" href="#">Apna<i>Ride</i></a><div><a class="l" href="#how">How it works</a><a class="l" href="#install">Install guide</a><a class="l" href="#faq">FAQ</a></div></div></nav>
+<div class="wrap">
+ <div>
+  <h1 class="in">Aapki apni sawari, ek tap door.</h1>
+  <p class="in">Book auto, e-rickshaw, bike or cab in Jaipur with clear fares and verified drivers. Driving? Join as an Apna Ride Partner and earn on your own schedule.</p>
+  <div class="cta in"><a class="btn gold" href="#download">Download the apps</a><a class="btn ghost" href="#how">See how it works</a></div>
+ </div>
+ <div class="stage" aria-hidden="true">
+  <svg viewBox="0 0 520 440">
+   <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFB62E"/><stop offset="1" stop-color="#ff7a59"/></linearGradient></defs>
+   <path d="M30 380 C130 270 40 210 170 170 S330 240 300 130 S430 90 480 60" fill="none" stroke="#ffffff14" stroke-width="22" stroke-linecap="round"/>
+   <path id="p" class="route" d="M30 380 C130 270 40 210 170 170 S330 240 300 130 S430 90 480 60" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-dasharray="1000"/>
+   <circle cx="30" cy="380" r="9" fill="#fff"/><circle class="pulse" cx="30" cy="380" r="9" fill="#fff"/>
+   <circle cx="480" cy="60" r="11" fill="#FFB62E"/><circle class="pulse" cx="480" cy="60" r="11" fill="#FFB62E" style="animation-delay:.8s"/>
+   <g><rect x="-17" y="-9" width="34" height="18" rx="7" fill="#FFB62E"/><rect x="-5" y="-6" width="12" height="12" rx="3" fill="#15123F"/>
+   <animateMotion dur="7s" begin="2.8s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#p"/></animateMotion></g>
+  </svg>
+  <div class="chip c1">Driver arriving in <b>3 min</b></div><div class="chip c2">Fare locked: <b>₹86</b></div>
+ </div>
+</div>
+</header>
+
+<main>
+<div class="wrap apps" id="download">
+ <article class="card cu" id="customer"><div class="ico" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="3" y="14" width="34" height="16" rx="7" fill="#15123F"/><rect x="12" y="8" width="16" height="10" rx="4" fill="#15123F"/><circle cx="12" cy="31" r="4" fill="#fff"/><circle cx="28" cy="31" r="4" fill="#fff"/></svg></div><span class="tag">For passengers</span><h3>Apna Ride</h3>
+  <p>Book a ride, track your driver live and pay the fare you saw.</p>
+  <a class="btn" data-dl aria-disabled="true">Coming soon</a>
+  <div class="meta"></div></article>
+ <article class="card pa" id="partner"><div class="ico" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="3" y="14" width="34" height="16" rx="7" fill="#FFB62E"/><rect x="12" y="8" width="16" height="10" rx="4" fill="#FFB62E"/><circle cx="12" cy="31" r="4" fill="#fff"/><circle cx="28" cy="31" r="4" fill="#fff"/></svg></div><span class="tag">For drivers</span><h3>Apna Ride Partner</h3>
+  <p>Accept rides, navigate to pickup and drop, and track your earnings.</p>
+  <a class="btn" data-dl aria-disabled="true">Coming soon</a>
+  <div class="meta"></div></article>
+</div>
+
+<section id="how"><div class="wrap rv"><h2>Three taps from door to destination</h2><p class="sub">The same simple flow, whether you ride or drive.</p>
+ <div class="steps">
+  <div class="step"><h3>Set your drop</h3><p>Choose a vehicle and see the fare before you confirm.</p></div>
+  <div class="step"><h3>Share the OTP</h3><p>Your driver arrives, you share a 4-digit code and the trip starts.</p></div>
+  <div class="step"><h3>Ride and rate</h3><p>Follow the route live. At the drop, rate your driver.</p></div>
+ </div></div></section>
+
+<section style="padding-top:0"><div class="wrap rv"><div class="feat">
+ <div><h3>Upfront fares</h3><p>No surprises. Coupons apply before you book.</p></div>
+ <div><h3>Live tracking</h3><p>Watch your driver move on the map and share your trip with family.</p></div>
+ <div><h3>Every vehicle</h3><p>Auto, e-rickshaw, bike and car, whatever suits your trip.</p></div>
+ <div><h3>Built for Jaipur</h3><p>Local drivers, local support, in a language you speak.</p></div>
+</div></div></section>
+
+<section class="install" id="install"><div class="wrap rv"><h2>Installing takes a minute</h2>
+ <p class="sub">The apps are in testing and are shared as an APK file, not through Google Play.</p>
+ <ol class="ol">
+  <li>Tap <b>Download APK</b> above for the app you need.</li>
+  <li>Open the downloaded file. If Android asks, allow <b>Install unknown apps</b> for your browser.</li>
+  <li>If Play Protect warns you, tap <b>More details</b>, then <b>Install anyway</b>.</li>
+  <li>Open the app and log in with your mobile number.</li>
+ </ol></div></section>
+
+<section id="faq"><div class="wrap rv"><h2>Questions</h2>
+ <details><summary>Is the app safe to install?</summary><p>Each APK is signed by us. Compare the checksum shown under the download button with the file on your phone if you want to be sure.</p></details>
+ <details><summary>Why isn't it on Google Play?</summary><p>We are testing with a small group first. A Play Store release comes after testing.</p></details>
+ <details><summary>Does it work on iPhone?</summary><p>Not yet. Apna Ride is Android only for now.</p></details>
+ <details><summary>I don't get my OTP.</summary><p>Wait a minute, then tap Resend OTP. Check that your number is correct.</p></details>
+</div></section>
+</main>
+<footer><div class="wrap"><span>© <span id="y"></span> Apna Ride. Made in Jaipur.</span><span>Android 8.0 and above</span></div></footer>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+const fmt=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.round(b/1024)+' KB';
+fetch('/api/apps?'+Date.now()).then(r=>r.json()).then(d=>{
+ [['customer','Apna Ride'],['partner','Apna Ride Partner']].forEach(([k,n])=>{
+  const a=d[k],c=document.getElementById(k);if(!a||!a.file)return;
+  const b=c.querySelector('[data-dl]');b.href=a.file;b.setAttribute('download',n.replace(/ /g,'-')+'.apk');b.removeAttribute('aria-disabled');b.textContent='Download APK';
+  const m=c.querySelector('.meta');
+  const row=t=>{const s=document.createElement('span');s.textContent=t;m.appendChild(s)};
+  row('Version '+a.version+' · '+fmt(a.size)+' · updated '+a.date);
+  if(a.notes)row("What's new: "+a.notes);
+  if(a.sha256){const s=document.createElement('span');s.append('SHA-256: ');const q=document.createElement('code');q.textContent=a.sha256;s.append(q);m.appendChild(s)}
+ });
+}).catch(()=>{});
+
+// scroll reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+// card tilt (sirf mouse wale device par)
+if(matchMedia('(hover:hover)').matches&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+ document.querySelectorAll('.apps .card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+   c.style.transform=`perspective(900px) rotateY(${x*7}deg) rotateX(${-y*7}deg) translateY(-6px)`});
+  c.addEventListener('mouseleave',()=>c.style.transform='');
+ });
+}
+// download click animation (asli download bhi saath me chalta hai)
+document.querySelectorAll('[data-dl]').forEach(b=>b.addEventListener('click',()=>{
+ if(b.getAttribute('aria-disabled')==='true'||b.classList.contains('busy'))return;
+ const old=b.textContent;b.classList.add('busy');b.textContent='Preparing download…';
+ setTimeout(()=>{b.classList.remove('busy');b.classList.add('done');b.textContent='';
+  const t=document.createElement('span');t.className='tick';t.textContent='✓';b.append(t,' Download started');burst(b)},1400);
+ setTimeout(()=>{b.classList.remove('done');b.textContent=old},4600);
+}));
+function burst(el){const r=el.getBoundingClientRect(),cols=['#FFB62E','#2B2670','#1FA463','#ff7a59','#ffffff'];
+ for(let i=0;i<26;i++){const p=document.createElement('i');p.className='conf';
+  p.style.left=(r.left+r.width/2)+'px';p.style.top=(r.top+r.height/2)+'px';p.style.background=cols[i%5];
+  const a=Math.random()*Math.PI*2,d=70+Math.random()*110;
+  p.style.setProperty('--x',Math.cos(a)*d+'px');p.style.setProperty('--y',Math.sin(a)*d-40+'px');p.style.setProperty('--r',(Math.random()*720-360)+'deg');
+  document.body.append(p);setTimeout(()=>p.remove(),1200)}}
+</script>
+</body>
+</html>
