@@ -102,9 +102,10 @@ async function api(req, res, url) {
 
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
-  const p = decodeURIComponent(url.pathname);
+  const p0 = decodeURIComponent(url.pathname);
+  const p = p0.length > 1 ? p0.replace(/\/+$/, '') : p0;   // /admin/ aur /admin dono chalein
   if (p.startsWith('/api/')) return api(req, res, url).catch(() => json(res, 500, { error: 'Server error' }));
-  if (p === '/admin') return serveFile(req, res, path.join(DIRS.priv, 'admin.html'), { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' });
+  if (p === '/admin' || p === '/admin.html') return serveFile(req, res, path.join(DIRS.priv, 'admin.html'), { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' });
   if (p.startsWith('/downloads/')) {
     const name = path.basename(p);
     if (!Object.values(FILES).includes(name)) { res.writeHead(404); return res.end('Not found'); }
