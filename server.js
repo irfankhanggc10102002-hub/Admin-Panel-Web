@@ -1,8 +1,9 @@
 // Apna Ride download website: koi npm package nahi chahiye. Chalane ke liye: node server.js
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
+const relay = require('./relay');
 
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Irfan';   // <-- ISE BADAL DO
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-me-now';   // <-- ISE BADAL DO
 const MAX_APK = 500 * 1024 * 1024;                                        // 500 MB
 // DATA_DIR: Render par persistent disk ka path (jaise /var/data). Na ho to isi folder me save hoga.
 const STORE = process.env.DATA_DIR || __dirname;
@@ -102,6 +103,7 @@ async function api(req, res, url) {
 
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
+  if (url.pathname.startsWith('/relay/')) return relay.handle(req, res, url).catch(() => json(res, 500, { error: 'Server error' }));
   const p0 = decodeURIComponent(url.pathname);
   const p = p0.length > 1 ? p0.replace(/\/+$/, '') : p0;   // /admin/ aur /admin dono chalein
   if (p.startsWith('/api/')) return api(req, res, url).catch(() => json(res, 500, { error: 'Server error' }));
