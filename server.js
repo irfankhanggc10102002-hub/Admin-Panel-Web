@@ -3,7 +3,7 @@ const http = require('http'), fs = require('fs'), path = require('path'), crypto
 const relay = require('./relay');
 
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-me-now';   // <-- ISE BADAL DO
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Irfan';   // <-- ISE BADAL DO
 const MAX_APK = 500 * 1024 * 1024;                                        // 500 MB
 // DATA_DIR: Render par persistent disk ka path (jaise /var/data). Na ho to isi folder me save hoga.
 const STORE = process.env.DATA_DIR || __dirname;
