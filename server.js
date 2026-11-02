@@ -3,7 +3,7 @@ const http = require('http'), fs = require('fs'), path = require('path'), crypto
 const relay = require('./relay');
 
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Irfan';   // <-- ISE BADAL DO
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-me-now';   // <-- ISE BADAL DO
 const MAX_APK = 500 * 1024 * 1024;                                        // 500 MB
 // DATA_DIR: Render par persistent disk ka path (jaise /var/data). Na ho to isi folder me save hoga.
 const STORE = process.env.DATA_DIR || __dirname;
@@ -40,13 +40,40 @@ function readBody(req, limit = 4096) {
 function serveFile(req, res, file, extra = {}) {
   fs.stat(file, (e, st) => {
     if (e || !st.isFile()) { res.writeHead(404); return res.end('Not found'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Content-Length': st.size, ...extra });
-    fs.createReadStream(file).pipe(res);
+    // Range support: Chrome/Android download manager beech me ruke download ko "resume" karta hai.
+    // Server Range na samjhe to download "failed" ho jaata hai.
+    const etag = `"${st.size}-${Math.floor(st.mtimeMs)}"`;
+    const h = { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Accept-Ranges': 'bytes',
+                'ETag': etag, 'Last-Modified': st.mtime.toUTCString(), ...extra };
+    let start = 0, end = st.size - 1, status = 200;
+    const rg = req.headers.range, ifr = req.headers['if-range'];
+    if (rg && (!ifr || ifr === etag || ifr === h['Last-Modified'])) {
+      const m = /^bytes=(\d*)-(\d*)$/.exec(rg.trim());
+      if (m && (m[1] !== '' || m[2] !== '')) {
+        if (m[1] === '') start = Math.max(0, st.size - parseInt(m[2], 10));
+        else { start = parseInt(m[1], 10); if (m[2] !== '') end = Math.min(end, parseInt(m[2], 10)); }
+      }
+      if (!m || start > end || start >= st.size) {
+        res.writeHead(416, { 'Content-Range': `bytes */${st.size}` }); return res.end();
+      }
+      status = 206; h['Content-Range'] = `bytes ${start}-${end}/${st.size}`;
+    }
+    h['Content-Length'] = end - start + 1;
+    res.writeHead(status, h);
+    if (req.method === 'HEAD') return res.end();
+    const s = fs.createReadStream(file, { start, end });
+    s.on('error', () => res.destroy());
+    res.on('close', () => s.destroy());
+    s.pipe(res);
   });
 }
 
 async function api(req, res, url) {
-  if (url.pathname === '/api/apps' && req.method === 'GET') return json(res, 200, readDb());
+  if (url.pathname === '/api/apps' && req.method === 'GET') {
+    const d = readDb(), out = {};
+    for (const k of Object.keys(d)) { const { sha256, ...pub } = d[k]; out[k] = pub; }   // checksum bahar nahi dikhana
+    return json(res, 200, out);
+  }
 
   if (url.pathname === '/api/login' && req.method === 'POST') {
     const ip = req.socket.remoteAddress, t = tries.get(ip) || { n: 0, t: Date.now() };
