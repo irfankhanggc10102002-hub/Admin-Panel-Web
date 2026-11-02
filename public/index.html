@@ -148,7 +148,7 @@ footer{background:var(--night);color:#bdbbe6;padding:38px 0;font-size:15px}foote
  </ol></div></section>
 
 <section id="faq"><div class="wrap rv"><h2>Questions</h2>
- <details><summary>Is the app safe to install?</summary><p>Each APK is signed by us. Compare the checksum shown under the download button with the file on your phone if you want to be sure.</p></details>
+ <details><summary>Is the app safe to install?</summary><p>Each APK is signed by us. Only install it from this official page, and never from a link a stranger sends you.</p></details>
  <details><summary>Why isn't it on Google Play?</summary><p>We are testing with a small group first. A Play Store release comes after testing.</p></details>
  <details><summary>Does it work on iPhone?</summary><p>Not yet. Apna Ride is Android only for now.</p></details>
  <details><summary>I don't get my OTP.</summary><p>Wait a minute, then tap Resend OTP. Check that your number is correct.</p></details>
@@ -166,7 +166,6 @@ fetch('/api/apps?'+Date.now()).then(r=>r.json()).then(d=>{
   const row=t=>{const s=document.createElement('span');s.textContent=t;m.appendChild(s)};
   row('Version '+a.version+' · '+fmt(a.size)+' · updated '+a.date);
   if(a.notes)row("What's new: "+a.notes);
-  if(a.sha256){const s=document.createElement('span');s.append('SHA-256: ');const q=document.createElement('code');q.textContent=a.sha256;s.append(q);m.appendChild(s)}
  });
 }).catch(()=>{});
 
