@@ -143,6 +143,7 @@ footer{background:var(--night);color:#bdbbe6;padding:38px 0;font-size:15px}foote
  <ol class="ol">
   <li>Tap <b>Download APK</b> above for the app you need.</li>
   <li>Open the downloaded file. If Android asks, allow <b>Install unknown apps</b> for your browser.</li>
+  <li>If Chrome shows <b>Can’t open file</b>, open your phone’s <b>Files</b> app, go to <b>Downloads</b> and tap the APK there.</li>
   <li>If Play Protect warns you, tap <b>More details</b>, then <b>Install anyway</b>.</li>
   <li>Open the app and log in with your mobile number.</li>
  </ol></div></section>
@@ -164,7 +165,7 @@ fetch('/api/apps?'+Date.now()).then(r=>r.json()).then(d=>{
   const b=c.querySelector('[data-dl]');b.href=a.file;b.setAttribute('download',n.replace(/ /g,'-')+'.apk');b.removeAttribute('aria-disabled');b.textContent='Download APK';
   const m=c.querySelector('.meta');
   const row=t=>{const s=document.createElement('span');s.textContent=t;m.appendChild(s)};
-  row('Version '+a.version+' · '+fmt(a.size)+' · updated '+a.date);
+  row('Version '+a.version+(a.size?' · '+fmt(a.size):'')+(a.date?' · updated '+a.date:''));
   if(a.notes)row("What's new: "+a.notes);
  });
 }).catch(()=>{});
