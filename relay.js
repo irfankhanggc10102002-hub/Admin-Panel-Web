@@ -7,7 +7,7 @@ if (GATEWAY_TOKEN === 'change-this-gateway-token') console.warn('WARNING: GATEWA
 
 const SECRET = crypto.randomBytes(16).toString('hex');
 const OTP_TTL = 5 * 60e3, JOB_TTL = 2 * 60e3, LEASE = 60e3, POLL_HOLD = 20e3, GATEWAY_ALIVE = 70e3;
-const MAX_TRIES = 5, PHONE_GAP = 30e3, PHONE_HOURLY = 5, IP_HOURLY = 30;
+const MAX_TRIES = 5, PHONE_GAP = 30e3, PHONE_HOURLY = 50, IP_HOURLY = 230;
 
 const otps = new Map(), jobs = new Map(), hits = new Map();
 let waiters = [], lastPoll = 0;
