@@ -1,22 +1,18 @@
 {
   "customer": {
     "file": "https://github.com/irfankhanggc10102002-hub/Admin-Panel-Web/releases/download/v1.1/Apna.Ride.apk",
-    "version": "v 1.1",
+    "version": "v1.1",
     "notes": "",
-    "size": 26409207,
-    "sha256": "eab51663f51bea3129383d0178c18f3e99766ac83f89eed2b14e788744076ca8",
+    "size": 26410863,
+    "sha256": "f28908e392633b357b781caf85df4f191536eb66d5a43f05500199188c09af7c",
     "date": "28 Oct 2026"
-  }
-}
-
-
-{
-  "Driver": {
+  },
+  "partner": {
     "file": "https://github.com/irfankhanggc10102002-hub/Admin-Panel-Web/releases/download/v1.1/Apna.Ride.Partner.apk",
-    "version": "v 1.1",
+    "version": "v1.1",
     "notes": "",
-    "size": 26409207,
-    "sha256": "eab51663f51bea3129383d0178c18f3e99766ac83f89eed2b14e788744076ca8",
+    "size": 13568796,
+    "sha256": "5b4baed016f8e2c64a9a5c39a8e4c95ab3877210910cd76e17f599ec184e8c46",
     "date": "28 Oct 2026"
   }
 }
