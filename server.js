@@ -19,10 +19,7 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': '
 const sessions = new Map();   // token -> expiry
 const tries = new Map();      // ip -> {n, t}
 
-const SEED = path.join(__dirname, 'data', 'apps.json');   // repo ke saath aayi apps.json (GitHub wali)
-const readFileJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
-// Pehle DB (DATA_DIR wali) padho; wo khaali/galat ho to repo wali apps.json padho
-const readDb = () => { const d = readFileJson(DB); return (d && Object.keys(d).length) ? d : (readFileJson(SEED) || {}); };
+const readDb = () => { try { return JSON.parse(fs.readFileSync(DB, 'utf8')); } catch { return {}; } };
 const writeDb = d => fs.writeFileSync(DB, JSON.stringify(d, null, 2));
 const json = (res, code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(obj)); };
 const clip = (s, n) => String(s || '').replace(/[\r\n]+/g, ' ').slice(0, n);
@@ -157,6 +154,4 @@ http.createServer((req, res) => {
     if (e.name === 'node_modules' || e.name === '.git') return;
     console.log('  ' + pre + e.name + (e.isDirectory() ? '/' : '')); if (e.isDirectory()) walk(path.join(d, e.name), pre + e.name + '/'); }); } catch {} };
   console.log('Project me ye files mili:'); walk(__dirname);
-  console.log('apps.json DB path:', DB, '| DB keys:', Object.keys(readFileJson(DB) || {}).join(',') || '(khaali/galat)',
-    '| repo seed keys:', Object.keys(readFileJson(SEED) || {}).join(',') || '(khaali/galat)', '| DATA_DIR:', process.env.DATA_DIR || '(set nahi)');
 });
