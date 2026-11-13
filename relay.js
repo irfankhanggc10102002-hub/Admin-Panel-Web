@@ -60,7 +60,10 @@ async function handle(req, res, url) {
 
   // ---- Customer app: OTP bhejo ----
   if (p === '/relay/otp/send' && req.method === 'POST') {
-    const phone = normPhone((await readJson(req)).phone);
+    const body = await readJson(req);
+    const phone = normPhone(body.phone);
+    // Driver app "app":"partner" bhejti hai -> SMS me "Apna Ride Partner". Customer app kuch nahi bhejti -> "Apna Ride".
+    const appName = body.app === 'partner' ? 'Apna Ride Partner' : 'Apna Ride';
     if (!phone) return send(res, 400, { ok: false, error: 'invalid_phone' }), true;
     if (!gatewayAlive()) return send(res, 503, { ok: false, error: 'sms_service_down' }), true;
     const old = otps.get(phone);
@@ -72,7 +75,7 @@ async function handle(req, res, url) {
     const id = crypto.randomBytes(8).toString('hex');
     // Text me "verification" shabd nahi likhna: operator use rok deta hai (test se pata chala)
     jobs.set(id, { id, number: phone, created: Date.now(), lease: 0,
-      text: 'Your Apna Ride verify code is ' + code + '. Valid for 5 minutes. Do not share it with anyone.' });
+      text: 'Your ' + appName + ' verify code is ' + code + '. Valid for 5 minutes. Do not share it with anyone.' });
     dispatch();
     return send(res, 200, { ok: true }), true;
   }
